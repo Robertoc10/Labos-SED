@@ -19,10 +19,10 @@ namespace Algoritmo_RSA
 			Console.WriteLine("Ingrese el mensaje a encriptar");
 			mensaje = Console.ReadLine();
 			crearLlaves();
-			byte[] encriptado = Encriptar(Encoding.UTF8.GetBytes(mensaje));
+			byte[] encriptado = Encriptar(Encoding.UTF8.GetBytes(mensaje));//asignamos el formato UTF8 para la codificaion de la frase
 			byte[] desencriptado = Desencriptar(encriptado);
-			Console.WriteLine("Mensaje encriptado:\n\t" + BitConverter.ToString(encriptado).Replace("-", "") + "\n");
-			Console.WriteLine("Mensaje desencriptado:\n\t" + Encoding.UTF8.GetString(desencriptado));
+			Console.WriteLine("Mensaje encriptado:\n" + BitConverter.ToString(encriptado).Replace("-", ""));
+			Console.WriteLine("Mensaje desencriptado:\n" + Encoding.UTF8.GetString(desencriptado));
 			Console.WriteLine("Presione cualquier tecla para terminar");
 			Console.ReadKey();
 		}
@@ -31,7 +31,7 @@ namespace Algoritmo_RSA
 		static byte[] Encriptar(byte[] mensaje)
 		{
 			byte[] encriptado;
-			using (var rsa = new RSACryptoServiceProvider(2048))
+			using (var rsa = new RSACryptoServiceProvider(2048))//creacion de un objeto RSA y asignandole tamaño de las llaves
 			{
 				rsa.ImportParameters(llavePublica);
 				encriptado = rsa.Encrypt(mensaje, true);
@@ -39,14 +39,6 @@ namespace Algoritmo_RSA
 			return encriptado;
 		}
 
-		static void crearLlaves()
-		{
-			using (var rsa = new RSACryptoServiceProvider(2048))
-			{
-				llavePrivada = rsa.ExportParameters(true);
-				llavePublica = rsa.ExportParameters(false);
-			}
-		}
 
 		static byte[] Desencriptar(byte[] mensaje)
 		{
@@ -57,6 +49,15 @@ namespace Algoritmo_RSA
 				desencriptado = rsa.Decrypt(mensaje, true);
 			}
 			return desencriptado;
+		}
+
+		static void crearLlaves()
+		{
+			using (var rsa = new RSACryptoServiceProvider(2048))
+			{
+				llavePrivada = rsa.ExportParameters(true);
+				llavePublica = rsa.ExportParameters(false);
+			}
 		}
 
 
